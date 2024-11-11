@@ -27,7 +27,7 @@
                           <div class="col-8 text-center align-self-center">
                               <div class="m-l-1 ">
                                   <h5 class="mt-0 round-inner"><?= $jmlDataPelanggan; ?></h5>
-                                  <p class="mb-0 text-muted">Data Pelanggan</p>
+                                  <p class="mb-0 text-muted">Data Konsumen</p>
                               </div>
                               <a href="?page=pelanggan" class="btn btn-primary mt-1">More Info</a>
                           </div>
@@ -52,7 +52,7 @@
                           <div class="col-8 text-center align-self-center">
                               <div class="m-l-1 ">
                                   <h5 class="mt-0 round-inner"><?= $jmlDataUser; ?></h5>
-                                  <p class="mb-0 text-muted">Data User</p>
+                                  <p class="mb-0 text-muted">Data Petugas</p>
                               </div>
                               <a href="?page=users" class="btn btn-primary mt-1">More Info</a>
                           </div>

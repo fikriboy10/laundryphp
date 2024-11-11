@@ -5,9 +5,29 @@
   $id_laundry = $_GET['id'];
 
   // menampilkan data transaksi
-  $query = "SELECT * FROM `tb_laundry` INNER JOIN `tb_pelanggan` ON `tb_laundry`.`pelangganid` = `tb_pelanggan`.`pelangganid` INNER JOIN `tb_users` ON `tb_users`.`userid` = `tb_laundry`.`userid` INNER JOIN `tb_jenis` ON `tb_jenis`.`kd_jenis` = `tb_laundry`.`kd_jenis` WHERE `tb_laundry`.`id_laundry` = '$id_laundry'";
-  $result = mysqli_query($conn, $query); 
-  $row = mysqli_fetch_assoc($result);
+  $query = "SELECT `tb_laundry`.*, `tb_pelanggan`.*, `tb_users`.*, `tb_jenis`.*, `tb_pembayaran`.`jenis_pembayaran`
+  FROM `tb_laundry`
+  INNER JOIN `tb_pelanggan` ON `tb_laundry`.`pelangganid` = `tb_pelanggan`.`pelangganid`
+  INNER JOIN `tb_users` ON `tb_users`.`userid` = `tb_laundry`.`userid`
+  INNER JOIN `tb_jenis` ON `tb_jenis`.`kd_jenis` = `tb_laundry`.`kd_jenis`
+  INNER JOIN `tb_pembayaran` ON `tb_pembayaran`.`kd_pembayaran` = `tb_laundry`.`kd_pembayaran`
+  WHERE `tb_laundry`.`id_laundry` = '$id_laundry'";
+
+$result = mysqli_query($conn, $query);
+
+// Periksa apakah query berhasil dieksekusi
+if ($result) {
+    // Periksa apakah hasilnya tidak kosong
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        // Proses data di sini
+    } else {
+        echo "Data tidak ditemukan.";
+    }
+} else {
+    die("Query gagal: " . mysqli_error($conn));
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -25,13 +45,13 @@
 
 <!-- ketika halaman onload, maka auto print -->
 <body onload="window.print()">
-<h2>Berbaju Laundry</h2>
+<h2>Laundry</h2>
 <table width='100%'>
   <tr>
     <td>
-        Bandar RT 01/06, Bandardawung, Tawangmangu, Karanganyar <br>
-        No. Hp / WA : 0895392518509 <br>
-        Email : berbajulaundry@gmail.com <br>
+        Kec. Kawali, Kabupaten Ciamis <br>
+        No. Hp / WA : 082262769180 <br>
+        Email : laundry@gmail.com <br>
         Jam Operasional : Senin – Minggu : 08.00 – 19.00 wib
     </td>
     <td align="right">
@@ -48,7 +68,7 @@
               <td><?= $row['id_laundry']; ?></td>
             </tr>
             <tr>
-              <th align="left">Nama Pelanggan</th>
+              <th align="left">Nama Konsumen</th>
               <td>:</td>
               <td><?= $row['pelanggannama']; ?></td>
             </tr>
@@ -81,6 +101,12 @@
               <th align="left">Status Pembayaran</th>
               <td>:</td>
               <td><?= ($row['status_pembayaran'] == 1) ? '<nav class="badge badge-success">Lunas</nav>' : '<nav class="badge badge-danger">Belum Lunas</nav>'; ?></td>
+            </tr>
+            <tr>
+            <tr>
+              <th align="left">Jenis Pembayaran</th>
+              <td>:</td>
+              <td><?= $row['jenis_pembayaran']; ?></td>
             </tr>
             <tr>
               <th align="left">Status Pengambilan Baju</th>

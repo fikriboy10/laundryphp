@@ -119,7 +119,7 @@ if (isset($_POST['login'])) {
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
         <script src="assets/js/jquery.scrollTo.min.js"></script>
-
+                            
         <!-- App js -->
         <script src="assets/js/app.js"></script>
 

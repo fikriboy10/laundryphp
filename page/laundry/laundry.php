@@ -36,6 +36,7 @@
                   <th>ID</th>
                   <th>Pelanggan</th>
                   <th>Jenis Layanan</th>
+                  <th>Jenis Pembayaran</th>
                   <th>Tgl. Terima</th>
                   <th>Tgl. Selesai</th>
                   <th>Status</th>
@@ -47,7 +48,13 @@
               <tbody>
               <?php 
               // menampilkan data transaksi laundry
-              $query = "SELECT * FROM `tb_laundry` INNER JOIN `tb_pelanggan` ON `tb_laundry`.`pelangganid` = `tb_pelanggan`.`pelangganid` INNER JOIN `tb_users` ON `tb_users`.`userid` = `tb_laundry`.`userid` INNER JOIN `tb_jenis` ON `tb_jenis`.`kd_jenis` = `tb_laundry`.`kd_jenis` ORDER BY `tb_laundry`.`id_laundry` DESC";
+              $query = "SELECT * FROM `tb_laundry` 
+        INNER JOIN `tb_pelanggan` ON `tb_laundry`.`pelangganid` = `tb_pelanggan`.`pelangganid` 
+        INNER JOIN `tb_users` ON `tb_users`.`userid` = `tb_laundry`.`userid` 
+        INNER JOIN `tb_jenis` ON `tb_jenis`.`kd_jenis` = `tb_laundry`.`kd_jenis`
+        INNER JOIN `tb_pembayaran` ON `tb_pembayaran`.`kd_pembayaran` = `tb_laundry`.`kd_pembayaran`
+        ORDER BY `tb_laundry`.`id_laundry` DESC";
+
               $result = mysqli_query($conn, $query); ?>
               <?php $i = 1; ?>
               <?php while ($row = mysqli_fetch_assoc($result)) : ?>
@@ -56,6 +63,7 @@
                   <td><?= $row['id_laundry']; ?></td>
                   <td><?= $row['pelanggannama']; ?></td>
                   <td><?= $row['jenis_laundry']; ?></td>
+                  <td><?= $row['jenis_pembayaran']; ?></td>
                   <td><?= $row['tgl_terima']; ?></td>
                   <td><?= $row['tgl_selesai']; ?></td>
                   <!-- jika status 1 berarti lunas, jika 0 belum lunas -->

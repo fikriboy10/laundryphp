@@ -1,13 +1,14 @@
 <?php 
 
-// ambil data dari url
+// ambil data id dari url
 $id = $_GET['id'];
 
+// jika tombol simpan ditekan
 if (isset($_POST['simpan'])) {
   $pesan_error = "";
 
   // jika kedua inputan kosong
-  if ($_POST['foto'] == "" && $_FILES['pelangganfoto']['name'] == "") {
+  if ($_POST['foto'] == "" && $_FILES['userfoto']['name'] == "") {
     $pesan_error = "Silahkan pilih salah satu <br>";
 
   // jika upload melalui oncam
@@ -19,23 +20,19 @@ if (isset($_POST['simpan'])) {
     $image_type = $image_type_aux[1];
   
     $image_base64 = base64_decode($image_parts[1]);
-
-    // memberikan nama unik pada gambar
-    $namafoto = uniqid() . '.png';
+    $namafoto = uniqid() . '.png'; // mengubah nama menjadi unik
 
     $file = $folderPenyimpanan . $namafoto;
-
-    // pindah foto ke folder fotouser/
+    // pindah foto ke folder
     file_put_contents($file, $image_base64);
   
-  // jika upload biasa / file upload biasa diinput
-  }elseif($_FILES['pelangganfoto']['name'] !== ""){
-    $namaFile = $_FILES["pelangganfoto"]["name"];
-    $ukuran = $_FILES["pelangganfoto"]["size"];
-    $error = $_FILES["pelangganfoto"]["error"];
-    $tmp = $_FILES["pelangganfoto"]["tmp_name"];
+  // jika upload biasa
+  }elseif($_FILES['userfoto']['name'] !== ""){
+    $namaFile = $_FILES["userfoto"]["name"];
+    $ukuran = $_FILES["userfoto"]["size"];
+    $error = $_FILES["userfoto"]["error"];
+    $tmp = $_FILES["userfoto"]["tmp_name"];
 
-    // belum upload gambar
     if ($error === 4) {
       $pesan_error = "Silahkan pilih salah satu";
     }
@@ -44,7 +41,7 @@ if (isset($_POST['simpan'])) {
     $ekstensigambar = explode('.', $namaFile);
     $ekstensigambar = strtolower(end($ekstensigambar));
 
-    // mengecek apakah ekstensi valid
+    // mengecek ekstensi valid
     if (!in_array($ekstensigambar, $gambarvalid)) {
       $pesan_error = "Yang anda upload bukan gambar";
     }
@@ -54,12 +51,14 @@ if (isset($_POST['simpan'])) {
       $pesan_error = "Ukuran gambar terlalu besar";
     }
 
+    // mengubah nama menjadi unik
     $namafoto = uniqid();
     $namafoto .= '.';
     $namafoto .= $ekstensigambar;
     
     // jika tidak ada error
     if ($pesan_error == "") {
+      // pindah file ke folder
       move_uploaded_file($tmp, 'fotouser/' .$namafoto);
     }
   }
@@ -67,20 +66,19 @@ if (isset($_POST['simpan'])) {
   if ($pesan_error == "") {
     // cek foto 
     // jika foto didalam database tidak kosong
-    $query = mysqli_query($conn, "SELECT * FROM tb_pelanggan WHERE pelangganid = $id");
+    $query = mysqli_query($conn, "SELECT * FROM tb_users WHERE userid = $id");
     $row = mysqli_fetch_assoc($query);
-    // jika ada foto lama maka foto yg lama diganti/dihapus dengan foto yg baru
-    if ($row['pelangganfoto'] != NULL || $row['pelangganfoto'] != "") {
-      unlink('fotouser/'.$row['pelangganfoto']);
+    if ($row['userfoto'] != NULL || $row['userfoto'] != "") {
+      unlink('fotouser/'.$row['userfoto']);
     }
 
-    // simpan nama foto di db
-    $namaPelanggan = $row['pelanggannama'];
-    mysqli_query($conn, "UPDATE tb_pelanggan SET pelangganfoto = '$namafoto' WHERE pelangganid = $id");
+    // simpan foto di db
+    $namaAdmin = $row['username'];
+    mysqli_query($conn, "UPDATE tb_users SET userfoto = '$namafoto' WHERE userid = $id");
     echo "
     <script>
-      alert('Foto pelanggan dengan nama $namaPelanggan berhasil diupload');
-      window.location.href = '?page=pelanggan';
+      alert('Foto dengan username $namaAdmin berhasil diupload');
+      window.location.href = '?page=users';
     </script>
     ";
   }
@@ -100,12 +98,12 @@ if (isset($_POST['simpan'])) {
               <div class="btn-group float-right">
                   <ol class="breadcrumb hide-phone p-0 m-0">
                       <li class="breadcrumb-item"><a href="#">Laundry</a></li>
-                      <li class="breadcrumb-item active">Upload Foto Konsumen</li>
+                      <li class="breadcrumb-item active">Upload Foto User</li>
                   </ol>
               </div>
-              <h4 class="page-title">Upload Foto Konsumen</h4>
+              <h4 class="page-title">Upload Foto User</h4>
           </div>
-          <!-- pesan error -->
+          <!-- pesan error tidak kosong -->
           <?php if ($pesan_error !== "") : ?>
             <div class="alert alert-danger" role="alert">
               <?= $pesan_error; ?>
@@ -119,18 +117,17 @@ if (isset($_POST['simpan'])) {
         <div class="card m-b-30">
           <div class="card-body">
           <h4 class="page-title">Webcam</h4>
-
+          
             <form action="" method="post" enctype="multipart/form-data">
             
-            <!-- webcam -->
+            <!-- menampilkan webcam -->
             <div id="my_camera" class="mb-3"></div>
 
+            <!-- ambil foto -->
             <button type="button" class="btn btn-primary" onclick="ambilgambar()">Ambil Foto</button>
-
-            <!-- menyimpan / input gambar -->
             <input type="hidden" name="foto" class="image-tag">
 
-            <!-- hasil foto -->
+            <!-- menampilkan hasil foto -->
             <div id="results" class="mt-3 mb-3"></div>
           
             <button class="btn btn-success" type="submit" name="simpan">Simpan</button>
@@ -146,13 +143,12 @@ if (isset($_POST['simpan'])) {
             <!-- upload gambar -->
             <div class="form-group row">
               <div class="col-sm-10">
-                <input class="form-control" type="file" id="foto" name="pelangganfoto" onchange="previewFoto()" /> 
+                <input class="form-control" type="file" id="foto" name="userfoto" onchange="previewFoto()" /> 
               </div>
             </div>
 
             <div class="form-group row">
               <div class="col-sm-10">
-                <!-- menampilkan prefiew gambar -->
                 <img src="fotouser/default.svg" class="img-thumbnail img-preview">
               </div>
             </div>
@@ -160,7 +156,6 @@ if (isset($_POST['simpan'])) {
             <button class="btn btn-success" type="submit" name="simpan">Simpan</button>
 
           </form>
-
         </div>
       </div>
       </div>
@@ -171,6 +166,7 @@ if (isset($_POST['simpan'])) {
     <!-- end page title end breadcrumb -->
 </div>
 
+<!-- script untuk menggunakan webcam -->
 <script language="JavaScript">
     Webcam.set({
         width: 470,

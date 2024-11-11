@@ -58,11 +58,11 @@ if (isset($_POST['ubah'])) {
               <div class="btn-group float-right">
                   <ol class="breadcrumb hide-phone p-0 m-0">
                       <li class="breadcrumb-item"><a href="index.php">Laundry</a></li>
-                      <li class="breadcrumb-item active">Data Pelanggan</li>
-                      <li class="breadcrumb-item active">Edit Pelanggan</li>
+                      <li class="breadcrumb-item active">Data Konsumen</li>
+                      <li class="breadcrumb-item active">Edit Konsumen</li>
                   </ol>
               </div>
-              <h4 class="page-title">Edit Pelanggan</h4>
+              <h4 class="page-title">Edit Konsumen</h4>
           </div>
       </div>
   </div>

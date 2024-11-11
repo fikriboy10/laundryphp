@@ -7,10 +7,10 @@
               <div class="btn-group float-right">
                   <ol class="breadcrumb hide-phone p-0 m-0">
                       <li class="breadcrumb-item"><a href="#">Laundry</a></li>
-                      <li class="breadcrumb-item active">Data Pelanggan</li>
+                      <li class="breadcrumb-item active">Data Konsumen</li>
                   </ol>
               </div>
-              <h4 class="page-title">Data Pelanggan</h4>
+              <h4 class="page-title">Data Konsumen</h4>
           </div>
       </div>
   </div>
@@ -28,7 +28,7 @@
                 <tr>
                   <th>#</th>
                   <th>Foto</th>
-                  <th>Nama Pelanggan</th>
+                  <th>Nama Konsumen</th>
                   <th>Jenis Kelamin</th>
                   <th>Alamat</th>
                   <th>No. Telp</th>

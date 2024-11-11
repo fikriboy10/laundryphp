@@ -78,6 +78,23 @@ if ($_SESSION['level'] == 'admin') {
       include "page/jenis/ubah.php";
     }
   }
+  // page pembayaran
+  if ($page == "pembayaran") {
+    // menampilkan halaman jenis
+    if ($aksi == "") {
+      include "page/pembayaran/pembayaran.php";
+    }
+    // tambah 
+    if ($aksi == "tambah") {
+      include "page/pembayaran/tambah.php";
+    }
+    if ($aksi == "hapus") {
+      include "page/pembayaran/hapus.php";
+    }
+    if ($aksi == "ubah") {
+      include "page/pembayaran/ubah.php";
+    }
+  }
 } // sampai sini
 
 

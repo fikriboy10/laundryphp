@@ -12,35 +12,41 @@ if (isset($_POST['tambah'])) {
   $totalbayar = htmlentities(strip_tags(trim($_POST["totalbayar"])));
   $catatan = htmlentities(strip_tags(trim($_POST["catatan"])));
   $status = htmlentities(strip_tags(trim($_POST["status"]))); // status pembayaran
+  $jenis_pembayaran = htmlentities(strip_tags(trim($_POST["jenis_pembayaran"]))); // Menambahkan jenis pembayaran
   $status_pengambilan = 0;
   $tgl_terima = date('Y-m-d');
   $ket_laporan = 1;
   $pesan_error = "";
 
   // input ke tb transaksi
-  $query = "INSERT INTO `tb_laundry` (`id_laundry`, `pelangganid`, `userid`, `kd_jenis`, `tgl_terima`, `tgl_selesai`, `jml_kilo`, `catatan`, `totalbayar`, `status_pembayaran`,`status_pengambilan`) VALUES ('$idlaundry', '$pelangganid', '$userid', '$jenis', '$tgl_terima', '$tgl_selesai', '$jml_kilo', '$catatan', '$totalbayar', '$status','$status_pengambilan')";
-  $result = mysqli_query($conn, $query);
+  $query = "INSERT INTO `tb_laundry` (`pelangganid`, `userid`, `kd_jenis`, `kd_pembayaran`, `tgl_terima`, `tgl_selesai`, `jml_kilo`, `catatan`, `totalbayar`, `status_pembayaran`, `status_pengambilan`) 
+          VALUES ('$pelangganid', '$userid', '$jenis', '$jenis_pembayaran', '$tgl_terima', '$tgl_selesai', '$jml_kilo', '$catatan', '$totalbayar', '$status', '$status_pengambilan')";
 
-  // jika sudah lunas, maka input data transaksi ke tb_laporan
-  if ($status == 1) {
-    mysqli_query($conn, "INSERT INTO `tb_laporan` (`id_laporan`, `tgl_laporan`, `ket_laporan`, `catatan`, `id_laundry`, `pemasukan`) VALUES ('', '$tgl_terima', '$ket_laporan', '$catatan', '$idlaundry', '$totalbayar')");
-  }
-  
-  if ($result) {
+$result = mysqli_query($conn, $query);
+
+// jika sudah lunas, maka input data transaksi ke tb_laporan
+if ($status == 1) {
+    mysqli_query($conn, "INSERT INTO `tb_laporan` (`tgl_laporan`, `ket_laporan`, `catatan`, `id_laundry`, `pemasukan`) 
+                         VALUES ('$tgl_terima', '$ket_laporan', '$catatan', '$idlaundry', '$totalbayar')");
+}
+
+if ($result) {
     echo "
       <script>
         alert('Transaksi $idlaundry berhasil ditambahkan');
         window.location.href = '?page=laundry';
       </script>
     ";
-  }else{
-    $pesan_error .= "Data gagal disimpan !";
-  }
+} else {
+    $pesan_error .= "Data gagal disimpan!";
+}
+
 
 }else{
   $pesan_error = "";
   $pelangganid = "";
   $jenis = "";
+  $jenis_pembayaran = "";
   $tarif = "";
   $tgl_selesai = "";
   $jml_kilo = "";
@@ -138,6 +144,22 @@ if (isset($_POST['tambah'])) {
                   </select>
                 </div>
               </div>
+              <div class="form-group row">
+              <label for="jenis_pembayaran" class="col-sm-2 col-form-label">Jenis Pembayaran</label>
+              <div class="col-sm-10">
+                <select class="select2 form-control mb-3 custom-select" style="width: 100%; height:36px;" name="jenis_pembayaran" id="jenis_pembayaran">
+                  <option>--Pilih jenis pembayaran---</option>
+                  <?php
+                  $query_pembayaran = mysqli_query($conn, "SELECT * FROM tb_pembayaran");
+                  while ($payment = mysqli_fetch_assoc($query_pembayaran)) :
+                    $selected = ($payment['kd_pembayaran'] == $jenis_pembayaran) ? 'selected' : '';
+                  ?>
+                    <option value="<?= $payment['kd_pembayaran']; ?>" <?= $selected; ?>><?= $payment['kd_pembayaran']; ?></option>
+                  <?php endwhile; ?>
+                </select>
+              </div>
+            </div>
+
 
               <div class="form-group row">
                 <label for="example-text-input" class="col-sm-2 col-form-label">Tarif (Hari)</label>

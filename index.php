@@ -30,7 +30,7 @@ $tampilusers = mysqli_fetch_assoc($users);
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui"
     />
-    <title>Petugas Laundry</title>
+    <title>Laundry</title>
     <!-- <meta content="Admin Dashboard" name="description" />
     <meta content="Mannatthemes" name="author" /> -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />

@@ -106,7 +106,7 @@ if (isset($_POST['ubah'])) {
                       <li class="breadcrumb-item active">Profile</li>
                   </ol>
               </div>
-              <h4 class="page-title">Profile Users</h4>
+              <h4 class="page-title">Profile Petugas</h4>
           </div>
       </div>
   </div>

@@ -1,8 +1,14 @@
 <?php
   $id_laundry = $_GET['id'];
   // menampilkan data transaksi (join 4 tabel)
-  $query = "SELECT * FROM `tb_laundry` INNER JOIN `tb_pelanggan` ON `tb_laundry`.`pelangganid` = `tb_pelanggan`.`pelangganid` INNER JOIN `tb_users` ON `tb_users`.`userid` = `tb_laundry`.`userid` INNER JOIN `tb_jenis` ON `tb_jenis`.`kd_jenis` = `tb_laundry`.`kd_jenis` WHERE `tb_laundry`.`id_laundry` = '$id_laundry'";
-  
+  $query = "SELECT `tb_laundry`.*, `tb_pelanggan`.*, `tb_users`.*, `tb_jenis`.*, `tb_pembayaran`.`jenis_pembayaran`
+  FROM `tb_laundry`
+  INNER JOIN `tb_pelanggan` ON `tb_laundry`.`pelangganid` = `tb_pelanggan`.`pelangganid`
+  INNER JOIN `tb_users` ON `tb_users`.`userid` = `tb_laundry`.`userid`
+  INNER JOIN `tb_jenis` ON `tb_jenis`.`kd_jenis` = `tb_laundry`.`kd_jenis`
+  INNER JOIN `tb_pembayaran` ON `tb_pembayaran`.`kd_pembayaran` = `tb_laundry`.`kd_pembayaran`
+  WHERE `tb_laundry`.`id_laundry` = '$id_laundry'";
+
   $result = mysqli_query($conn, $query); 
   $row = mysqli_fetch_assoc($result);
 ?>
@@ -37,7 +43,7 @@
               <td><?= $row['id_laundry']; ?></td>
             </tr>
             <tr>
-              <th>Pelanggan</th>
+              <th>Konsumen</th>
               <td><?= $row['pelanggannama']; ?></td>
             </tr>
             <tr>
